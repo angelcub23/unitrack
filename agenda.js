@@ -1,4 +1,3 @@
-
 // =====================
 // UniTrack - Agenda con Google Login + Calendar con hora personalizada
 // =====================
@@ -50,6 +49,7 @@ taskForm.addEventListener("submit", (e) => {
   renderTasks();
 
   // --- Si hay sesión con Google, crear evento en Calendar ---
+  const accessToken = localStorage.getItem("google_access_token");
   if (accessToken) {
     const startDateTime = new Date(`${date}T${startTime}:00`);
     const endDateTime = new Date(`${date}T${endTime}:00`);
@@ -100,11 +100,10 @@ themeToggle.addEventListener("click", () => {
     ? "🌞 Modo Claro"
     : "🌓 Modo Oscuro";
 
-  // Cambiar texto del botón Google según el modo
   if (document.body.classList.contains("dark")) {
     loginButton.style.color = "#fff";
   } else {
-    loginButton.style.color = "#fff"; // mismo color, puedes ajustar si quieres
+    loginButton.style.color = "#fff";
   }
 });
 
@@ -129,43 +128,94 @@ document.getElementById("exportBtn").addEventListener("click", () => {
 // ============================
 const CLIENT_ID = "885469183343-lpr31ui9scfq0oiq5e8s3tba6oejg3br.apps.googleusercontent.com";
 
+// ✅ SOLUCIÓN: Usar la URL actual (se queda en la misma página)
 let redirectUri;
 if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-  redirectUri = "http://127.0.0.1:5500/";
+  redirectUri = window.location.origin + window.location.pathname;
 } else {
-  redirectUri = "https://angelcub23.github.io/unitrack/";
+  // ✅ CAMBIO IMPORTANTE: Usar la página actual completa
+  redirectUri = window.location.origin + window.location.pathname;
 }
 
+console.log("🔗 Redirect URI configurado:", redirectUri);
+
 loginButton.addEventListener("click", () => {
+  // Guardar la página actual antes de redirigir
+  localStorage.setItem("loginReturnPage", window.location.href);
+  
   const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
     redirectUri
   )}&response_type=token&scope=email%20profile%20openid%20https://www.googleapis.com/auth/calendar.events`;
+  
   window.location.href = authUrl;
 });
 
 // ============================
-// 🗓️ Vincular UniTrack con Google Calendar
+// 🗓️ Procesar token al regresar de Google
 // ============================
-const params = new URLSearchParams(window.location.hash.substring(1));
-const accessToken = params.get("access_token");
+window.addEventListener("load", () => {
+  const hash = window.location.hash;
+  
+  if (hash && hash.includes("access_token")) {
+    // Extraer token de la URL
+    const params = new URLSearchParams(hash.substring(1));
+    const accessToken = params.get("access_token");
 
-if (accessToken) {
-  console.log("✅ Token de acceso recibido:", accessToken);
+    if (accessToken) {
+      console.log("✅ Token de acceso recibido:", accessToken.substring(0, 20) + "...");
+      
+      // Guardar token en localStorage
+      localStorage.setItem("google_access_token", accessToken);
 
-  fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      alert(`Hola ${data.name || data.email}! Has iniciado sesión con Google 🎉`);
+      // Limpiar la URL (quitar el token visible)
+      window.history.replaceState(null, null, window.location.pathname);
+
+      // Obtener información del usuario
+      fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          alert(`Hola ${data.name || data.email}! Has iniciado sesión con Google 🎉`);
+          
+          // Ocultar botón de login
+          if (loginButton) {
+            loginButton.style.display = "none";
+            loginButton.textContent = `👋 ${data.name || data.email}`;
+            loginButton.style.display = "block";
+            loginButton.disabled = true;
+          }
+        })
+        .catch((err) => console.error("Error obteniendo info de usuario:", err));
+
+      // Listar próximos eventos del calendario
+      fetch(
+        "https://www.googleapis.com/calendar/v3/calendars/primary/events?maxResults=5&orderBy=startTime&singleEvents=true",
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      )
+        .then((res) => res.json())
+        .then((data) => console.log("📅 Próximos eventos:", data.items))
+        .catch((err) => console.error("Error al listar eventos:", err));
+    }
+  }
+
+  // Verificar si ya hay sesión iniciada
+  const savedToken = localStorage.getItem("google_access_token");
+  if (savedToken) {
+    fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+      headers: { Authorization: `Bearer ${savedToken}` },
     })
-    .catch((err) => console.error("Error obteniendo info de usuario:", err));
-
-  fetch(
-    "https://www.googleapis.com/calendar/v3/calendars/primary/events?maxResults=5&orderBy=startTime&singleEvents=true",
-    { headers: { Authorization: `Bearer ${accessToken}` } }
-  )
-    .then((res) => res.json())
-    .then((data) => console.log("📅 Próximos eventos:", data.items))
-    .catch((err) => console.error("Error al listar eventos:", err));
-}
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("✅ Sesión activa:", data.name || data.email);
+        if (loginButton) {
+          loginButton.textContent = `👋 ${data.name || data.email}`;
+          loginButton.disabled = true;
+        }
+      })
+      .catch((err) => {
+        console.error("Token expirado o inválido:", err);
+        localStorage.removeItem("google_access_token");
+      });
+  }
+});
