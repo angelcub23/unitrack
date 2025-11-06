@@ -1,0 +1,375 @@
+
+/* === VARIABLES BASE === */
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #1c1f23;
+  --accent: #00b4d8;
+  --accent-glow: 0 0 10px #00b4d8, 0 0 20px #00b4d8;
+  --border: rgba(0, 0, 0, 0.1);
+  --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  --gradient: linear-gradient(135deg, #00b4d8, #0077b6);
+  --radius: 14px;
+  --transition: 0.3s ease all;
+}
+
+/* === MODO OSCURO === */
+body.dark {
+  --bg: #0e141b;
+  --card: #101923;
+  --text: #f3f7fa;
+  --accent: #64dfdf;
+  --accent-glow: 0 0 15px #64dfdf, 0 0 35px #48bfe3;
+  --border: rgba(255, 255, 255, 0.08);
+  --shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  --gradient: linear-gradient(135deg, #48bfe3, #5390d9);
+}
+
+/* === REGLAS GENERALES === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", system-ui, sans-serif;
+  transition: var(--transition);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === HEADER === */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #00b4db, #0083b0);
+  padding: 10px 20px;
+  color: white;
+  position: relative;
+  box-shadow: var(--shadow);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-center {
+  text-align: center;
+  flex: 1;
+}
+
+.header-center h1 {
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+  text-shadow: var(--accent-glow);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+/* === BOTONES GOOGLE Y LOGIN === */
+.header-left button {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  border-radius: 50px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+
+.header-left button:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+#loginGoogle img {
+  width: 20px;
+  height: 20px;
+}
+
+#loginBtn {
+  font-weight: 500;
+}
+
+/* === BOTÓN MODO OSCURO === */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  padding: 8px 14px;
+  color: white;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* === CONTENEDOR PRINCIPAL === */
+.container {
+  width: 90%;
+  max-width: 720px;
+  margin: 40px auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* === TARJETAS === */
+.form-section, .tasks-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 25px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.form-section::before, .tasks-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: var(--gradient);
+}
+
+/* === FORMULARIO === */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+form label {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+  display: block;
+}
+
+form input, form select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+form input:focus, form select:focus {
+  border-color: var(--accent);
+  box-shadow: var(--accent-glow);
+  outline: none;
+}
+
+form button {
+  align-self: stretch;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: var(--radius);
+  background: var(--gradient);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+form button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--accent-glow);
+}
+
+/* === LISTA DE TAREAS === */
+#taskList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.task {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow);
+}
+
+.task .delete {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition);
+  color: #ff4d4d;
+}
+
+.task .delete:hover {
+  transform: scale(1.2);
+  color: #ff1a1a;
+}
+
+/* === BOTÓN EXPORTAR === */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+#exportBtn {
+  background-color: #12b3db;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+#exportBtn:hover {
+  background-color: #007e33;
+}
+
+/* === FOOTER === */
+footer {
+  text-align: center;
+  padding: 20px 10px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+/* === RESPONSIVO === */
+@media (max-width: 600px) {
+  .header-left {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+/* === HEADER (con animación restaurada) === */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--gradient);
+  color: white;
+  padding: 25px 20px;
+  min-height: 120px;
+  position: relative;        /* necesario para ::after posicionarse respecto al header */
+  box-shadow: var(--shadow);
+  overflow: hidden;          /* oculta el exceso del glow pero permite verlo parcialmente */
+}
+
+/* el glow/animación circular que tenías antes */
+header::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.12), transparent 70%);
+  animation: rotateGlow 10s linear infinite;
+  pointer-events: none;      /* para que no interfiera con clicks en el header */
+  mix-blend-mode: overlay;   /* opcional: suaviza cómo se mezcla con el gradiente */
+  z-index: 0;                /* se sitúa detrás del contenido del header */
+}
+
+@keyframes rotateGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Aseguramos que el contenido del header quede por encima del ::after */
+.header-left,
+.header-center,
+.header-right {
+  position: relative;
+  z-index: 1;
+}
+
+/* ajustes visuales (mantén el resto igual) */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-center {
+  text-align: center;
+  flex: 1;
+}
+
+.header-center h1 {
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+  text-shadow: var(--accent-glow);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(120deg, rgba(0, 180, 216, 0.05), transparent),
+    linear-gradient(240deg, rgba(0, 119, 182, 0.05), transparent);
+  z-index: -1;
+}
+
+h2 {
+  margin-bottom: 15px; /* separa el título del input */
+}
