@@ -1,0 +1,87 @@
+@ -0,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UniTrack - Agenda Universitaria</title>
+  <link rel="stylesheet" href="agenda.css" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <header class="header">
+    <!-- Izquierda -->
+    <div class="header-left">
+      
+        
+      
+
+
+      
+      </button>
+
+      <button id="loginGoogle" class="theme-toggle">
+        <svg style="width:18px; height:18px;" viewBox="0 0 533.5 544.3">
+          <path fill="#4285F4" d="M533.5 278.4c0-17.7-1.6-34.9-4.7-51.5H272v97.6h146.9c-6.4 34.7-25.4 64.1-54.3 83.9v69.6h87.6c51.2-47.2 80.3-116.7 80.3-199.6z"/>
+          <path fill="#34A853" d="M272 544.3c73.3 0 134.7-24.1 179.6-65.5l-87.6-69.6c-24.4 16.3-55.8 26-91.9 26-70.7 0-130.6-47.7-152.1-111.5H29.1v70.2C74.1 479 166.5 544.3 272 544.3z"/>
+          <path fill="#FBBC05" d="M119.9 320.9c-5.3-16-8.3-33.1-8.3-50.9s3-34.9 8.3-50.9V148.9H29.1C10.5 186.2 0 226.6 0 272s10.5 85.8 29.1 123.1l90.8-74.2z"/>
+          <path fill="#EA4335" d="M272 107.4c38.9 0 73.8 13.3 101.3 39.3l76-76C406.7 24.9 345.3 0 272 0 166.5 0 74.1 65.3 29.1 148.9l90.8 70.2c21.5-63.8 81.4-111.7 152.1-111.7z"/>
+        </svg>
+        <span>Login</span>
+      </button>
+    </div>
+
+    <!-- Centro -->
+    <div class="header-center">
+      <h1>📚 UniTrack</h1>
+      <p>Tu agenda universitaria inteligente</p>
+    </div>
+
+    <!-- Derecha -->
+    <div class="header-right">
+      <button class="theme-toggle" id="themeToggle">🌓 Modo Oscuro</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="form-section">
+      <h2>Agregar nueva tarea</h2>
+      <form id="taskForm">
+        <input type="text" id="title" placeholder="Título de la tarea" required />
+
+        <label for="date">Fecha:</label>
+        <input type="date" id="date" required />
+
+        <label for="startTime">Hora de inicio:</label>
+        <input type="time" id="startTime" required />
+
+        <label for="endTime">Hora de fin:</label>
+        <input type="time" id="endTime" required />
+
+        <label for="category">Categoría:</label>
+        <select id="category">
+          <option value="Tarea">Tarea</option>
+          <option value="Examen">Examen</option>
+          <option value="Reunión">Reunión</option>
+          <option value="Otro">Otro</option>
+        </select>
+
+        <button type="submit">Agregar</button>
+      </form>
+    </section>
+
+    <div class="actions">
+      <button id="exportBtn">📤 Exportar tareas</button>
+    </div>
+
+    <section class="tasks-section">
+      <h2>Tus recordatorios</h2>
+      <ul id="taskList"></ul>
+    </section>
+  </main>
+
+  <footer></footer>
+
+  <script src="agenda.js"></script>
+</body>
+</html>
