@@ -1,5 +1,5 @@
 
-/* === VARIABLES BASE === */
+
 :root {
   --bg: #f4f7fb;
   --card: #ffffff;
@@ -13,7 +13,7 @@
   --transition: 0.3s ease all;
 }
 
-/* === MODO OSCURO === */
+
 body.dark {
   --bg: #0e141b;
   --card: #101923;
@@ -25,7 +25,7 @@ body.dark {
   --gradient: linear-gradient(135deg, #48bfe3, #5390d9);
 }
 
-/* === REGLAS GENERALES === */
+
 * {
   margin: 0;
   padding: 0;
@@ -43,7 +43,7 @@ body {
   overflow-x: hidden;
 }
 
-/* === HEADER === */
+
 header {
   display: flex;
   justify-content: space-between;
